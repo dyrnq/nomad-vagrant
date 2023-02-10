@@ -48,11 +48,11 @@ is_server() {
 fun_install() {
     mkdir -p /var/lib/consul
     mkdir -p /var/log/consul
-    mkdir -p /etc/consul
+    mkdir -p /etc/consul.d
     mkdir -p /var/lib/nomad
     mkdir -p /var/log/nomad
-    mkdir -p /etc/nomad
-    chmod a+w /etc/nomad
+    mkdir -p /etc/nomad.d
+    chmod a+w /etc/nomad.d
 
 
     echo "Installing Consul..."
@@ -70,7 +70,7 @@ Wants=network-online.target
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/consul agent -config-dir /etc/consul/ -bind=$ip4 -node="$(hostname)"
+ExecStart=/usr/bin/consul agent -config-dir /etc/consul.d/ -bind=$ip4 -node="$(hostname)"
 ExecReload=/bin/kill -HUP \$MAINPID
 KillMode=process
 KillSignal=SIGTERM
@@ -83,7 +83,7 @@ WantedBy=multi-user.target
 EOF
 
 if is_server; then
-cat >/etc/consul/consul.json<<EOF
+cat >/etc/consul.d/consul.json<<EOF
 {
     "bootstrap_expect": 3,
     "server": true,
@@ -110,7 +110,7 @@ cat >/etc/consul/consul.json<<EOF
 }
 EOF
 else
-cat >/etc/consul/consul.json<<EOF
+cat >/etc/consul.d/consul.json<<EOF
 {
     "server": false,
     "client_addr": "0.0.0.0",
