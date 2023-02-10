@@ -48,11 +48,11 @@ is_server() {
 fun_install() {
     mkdir -p /var/lib/consul
     mkdir -p /var/log/consul
-    mkdir -p /etc/consul
+    mkdir -p /etc/consul.d
     mkdir -p /var/lib/nomad
     mkdir -p /var/log/nomad
-    mkdir -p /etc/nomad
-    chmod a+w /etc/nomad
+    mkdir -p /etc/nomad.d
+    chmod a+w /etc/nomad.d
 
 
     echo "Installing Nomad..."
@@ -68,8 +68,8 @@ Description=Nomad Agent
 
 [Service]
 Restart=on-failure
-EnvironmentFile=-/etc/nomad/nomad.conf
-ExecStart=/usr/bin/nomad agent -config /etc/nomad -node="$(hostname)" $FLAGS
+EnvironmentFile=-/etc/nomad.d/nomad.conf
+ExecStart=/usr/bin/nomad agent -config /etc/nomad.d -node="$(hostname)" $FLAGS
 ExecReload=/bin/kill -HUP \$MAINPID
 KillMode=process
 KillSignal=SIGTERM
@@ -85,11 +85,11 @@ OOMScoreAdjust=-1000
 [Install]
 WantedBy=multi-user.target
 EOF
-# rm -rf /etc/nomad/nomad.json
-# rm -rf /etc/nomad/nomad.hcl
-# rm -rf /etc/nomad/10-nomad.hcl
+# rm -rf /etc/nomad.d/nomad.json
+# rm -rf /etc/nomad.d/nomad.hcl
+# rm -rf /etc/nomad.d/10-nomad.hcl
 if is_server; then
-cat >/etc/nomad/nomad.hcl<<EOF
+cat >/etc/nomad.d/nomad.hcl<<EOF
 log_level = "INFO"
 log_file = "/var/log/nomad/"
 log_rotate_duration = "24h"
@@ -125,7 +125,7 @@ server {
 disable_update_check = true
 EOF
 else
-cat >/etc/nomad/nomad.hcl<<EOF
+cat >/etc/nomad.d/nomad.hcl<<EOF
 log_level = "INFO"
 data_dir = "/var/lib/nomad"
 log_file = "/var/log/nomad/"
@@ -176,7 +176,7 @@ curl -# -o /var/lib/nomad/plugins/containerd-driver -fSL --retry 10 https://file
 chmod +x /var/lib/nomad/plugins/containerd-driver
 
 
-cat >/etc/nomad/nomad-containerd-driver.hcl <<EOF
+cat >/etc/nomad.d/nomad-containerd-driver.hcl <<EOF
 plugin "containerd-driver" {
   config {
     enabled = true
