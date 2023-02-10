@@ -47,8 +47,10 @@ is_server() {
 
 fun_install() {
     mkdir -p /var/lib/consul
+    mkdir -p /var/log/consul
     mkdir -p /etc/consul
     mkdir -p /var/lib/nomad
+    mkdir -p /var/log/nomad
     mkdir -p /etc/nomad
     chmod a+w /etc/nomad
 
@@ -99,7 +101,10 @@ cat >/etc/consul/consul.json<<EOF
     "retry_join": ["192.168.33.4","192.168.33.5","192.168.33.6"],
     "retry_interval": "30s",
     "start_join": ["192.168.33.4","192.168.33.5","192.168.33.6"],
-    "disable_update_check": true
+    "disable_update_check": true,
+    "log_level": "INFO",
+    "log_file": "/var/log/consul/",
+    "log_rotate_duration": "24h"
 }
 EOF
 else
@@ -122,7 +127,10 @@ cat >/etc/consul/consul.json<<EOF
     "retry_join": ["192.168.33.4","192.168.33.5","192.168.33.6"],
     "retry_interval": "30s",
     "start_join": ["192.168.33.4","192.168.33.5","192.168.33.6"],
-    "disable_update_check": true
+    "disable_update_check": true,
+    "log_level": "INFO",
+    "log_file": "/var/log/consul/",
+    "log_rotate_duration": "24h"
 }
 EOF
 fi
