@@ -97,6 +97,7 @@ nerdctl run -d --name apisix \
 --restart always \
 --net host \
 --privileged \
+--ulimit nofile=40000:40000 \
 -v ${apisix_home}/conf/config.yaml:/usr/local/apisix/conf/config.yaml  \
 ${apisix_image}
 
