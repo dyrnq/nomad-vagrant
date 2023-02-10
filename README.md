@@ -22,6 +22,12 @@ tks [nekione`s nekione/calico-nomad](https://github.com/nekione/calico-nomad).
       - [reinit calico default-ipv4-ippool](#reinit-calico-default-ipv4-ippool)
       - [test calico network](#test-calico-network)
       - [run nomad job with cni calico](#run-nomad-job-with-cni-calico)
+  - [apache apisix with consul](#apache-apisix-with-consul)
+    - [basic knowledge](#basic-knowledge)
+    - [install apisix and apisix-dashboard](#install-apisix-and-apisix-dashboard)
+    - [service discovery var consul dns](#service-discovery-var-consul-dns)
+    - [push route with apisix admin api](#push-route-with-apisix-admin-api)
+    - [test watch](#test-watch)
   - [conclusion](#conclusion)
   - [ref](#ref)
 
@@ -163,6 +169,63 @@ quick rerun
 ```bash
 nomad job stop -purge netshoot-1 && nomad run -detach /vagrant/nomad-jobs/example-job-cni-calico.hcl
 
+```
+
+## apache apisix with consul
+
+### basic knowledge
+
+>How to use Consul as Registration Center in Apache APISIX?
+[xref](https://gist.github.com/hzbd/e36245256dfaa96da96f3ae1d83ef790)
+
+### install apisix and apisix-dashboard
+
+```bash
+bash /vagrant/scripts/install-apisix.sh
+```
+
+### service discovery var consul dns
+
+```bash
+dig @127.0.0.1 -p 8600 nomad.service.dc1.consul. ANY
+dig @127.0.0.1 -p 8600 nomad-client.service.dc1.consul. ANY
+
+dig @127.0.0.1 -p 8600 netshoot-2-netshoot-group.service.dc1.consul. ANY
+```
+
+### push route with apisix admin api
+
+```bash
+
+curl http://127.0.0.1:9180/apisix/admin/routes/1 -H 'X-API-KEY: edd1c9f034335f136f87ad84b625c8f1' -X PUT -i -d '
+{
+  "uri": "/",
+  "name": "consul-netshoot-2-netshoot-group",
+  "upstream": {
+    "timeout": {
+      "connect": 6,
+      "send": 6,
+      "read": 6
+    },
+    "type": "roundrobin",
+    "scheme": "http",
+    "discovery_type": "dns",
+    "pass_host": "pass",
+    "service_name": "netshoot-2-netshoot-group.service.dc1.consul:8080",
+    "keepalive_pool": {
+      "idle_timeout": 60,
+      "requests": 1000,
+      "size": 320
+    }
+  }
+}'
+
+```
+
+### test watch
+
+```bash
+while true ; do curl http://127.0.0.1:9080; sleep 2s; echo "------------>";  done
 ```
 
 ## conclusion
