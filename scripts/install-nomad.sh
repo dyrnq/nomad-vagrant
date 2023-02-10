@@ -47,8 +47,10 @@ is_server() {
 
 fun_install() {
     mkdir -p /var/lib/consul
+    mkdir -p /var/log/consul
     mkdir -p /etc/consul
     mkdir -p /var/lib/nomad
+    mkdir -p /var/log/nomad
     mkdir -p /etc/nomad
     chmod a+w /etc/nomad
 
@@ -82,6 +84,8 @@ EOF
 if is_server; then
 cat >/etc/nomad/nomad.hcl<<EOF
 log_level = "INFO"
+log_file = "/var/log/nomad/"
+log_rotate_duration = "24h"
 data_dir = "/var/lib/nomad"
 bind_addr = "0.0.0.0"
 enable_debug = false
@@ -117,6 +121,8 @@ else
 cat >/etc/nomad/nomad.hcl<<EOF
 log_level = "INFO"
 data_dir = "/var/lib/nomad"
+log_file = "/var/log/nomad/"
+log_rotate_duration = "24h"
 bind_addr = "0.0.0.0"
 enable_debug = false
 advertise {
