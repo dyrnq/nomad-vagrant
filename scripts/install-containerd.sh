@@ -42,7 +42,7 @@ wget --continue https://files.m.daocloud.io/github.com/flannel-io/cni-plugin/rel
 tar -xvz -f cni-plugins-linux-amd64-v1.2.0.tgz -C /opt/cni/bin
 
 
-install -m 755 flannel-amd64 //opt/cni/bin/flannel
+install -m 755 flannel-amd64 /opt/cni/bin/flannel
 
 tar -xvf containerd-1.6.16-linux-amd64.tar.gz -C /usr/local
 install -m 755 runc.amd64 /usr/bin/runc
