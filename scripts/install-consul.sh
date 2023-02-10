@@ -72,6 +72,8 @@ Wants=network-online.target
 Type=simple
 ExecStart=/usr/bin/consul agent -config-dir /etc/consul/ -bind=$ip4 -node="$(hostname)"
 ExecReload=/bin/kill -HUP \$MAINPID
+KillMode=process
+KillSignal=SIGTERM
 Restart=on-failure
 RestartSec=10s
 LimitNOFILE=65536
