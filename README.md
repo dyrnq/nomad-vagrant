@@ -158,8 +158,10 @@ remove job
 nomad job stop -purge netshoot-1
 ```
 
+quick rerun
+
 ```bash
-nomad job stop -purge netshoot-1 && nomad run -detach /vagrant/nomad-jobs/example-job-cni.hcl
+nomad job stop -purge netshoot-1 && nomad run -detach /vagrant/nomad-jobs/example-job-cni-calico.hcl
 
 ```
 
