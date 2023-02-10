@@ -86,6 +86,9 @@ discovery:                       # service discovery center
   dns:
     servers:
       - "127.0.0.1:8600"         # use the real address of your dns server
+  consul:
+    servers:
+      - "http://127.0.0.1:8500"
 EOF
 
 
