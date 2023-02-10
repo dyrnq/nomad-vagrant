@@ -228,6 +228,16 @@ curl http://127.0.0.1:9180/apisix/admin/routes/1 -H 'X-API-KEY: edd1c9f034335f13
 while true ; do curl http://127.0.0.1:9080; sleep 2s; echo "------------>";  done
 ```
 
+scale job
+
+```bash
+# first scale expansion 
+nomad job scale -detach netshoot-2 20
+
+# then scale contraction
+nomad job scale -detach netshoot-2 1
+```
+
 ## conclusion
 
 flanneld and calico are all work fine with nomad,but calico-node subnet can not connect with each other.
