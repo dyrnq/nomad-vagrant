@@ -71,9 +71,16 @@ Restart=on-failure
 EnvironmentFile=-/etc/nomad/nomad.conf
 ExecStart=/usr/bin/nomad agent -config /etc/nomad -node="$(hostname)" $FLAGS
 ExecReload=/bin/kill -HUP \$MAINPID
+KillMode=process
 KillSignal=SIGTERM
 User=root
 Group=root
+
+LimitNOFILE=65536
+LimitNPROC=infinity
+RestartSec=2
+TasksMax=infinity
+OOMScoreAdjust=-1000
 
 [Install]
 WantedBy=multi-user.target
