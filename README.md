@@ -256,6 +256,14 @@ curl http://127.0.0.1:9180/apisix/admin/routes/1 -H 'X-API-KEY: edd1c9f034335f13
 }'
 ```
 
+```bash
+curl -fsSL http://127.0.0.1:8500/v1/catalog/service/netshoot-2-netshoot-group |jq -r ".[].ServiceAddress"
+```
+
+```bash
+curl -fsL http://127.0.0.1:9090/v1/discovery/consul/dump | jq -r '.services."netshoot-2-netshoot-group"[].host'
+```
+
 ### test watch
 
 ```bash
@@ -274,7 +282,7 @@ nomad job scale -detach netshoot-2 1
 
 ## conclusion
 
-flanneld and calico are all work fine with nomad,but calico-node subnet can not connect with each other.
+Flanneld and calico are all work fine with nomad, nomad can use cni and nomad-driver-containerd create containers successfully, but calico subnet can not connect with each other.
 
 ## ref
 
