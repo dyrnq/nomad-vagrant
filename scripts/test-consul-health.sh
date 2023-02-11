@@ -3,8 +3,12 @@
 nerdctl rm -f nginx-1 2>/dev/null || true
 nerdctl rm -f nginx-2 2>/dev/null || true
 
-nerdctl run -d -p 18080:80 --name nginx-1 nginx:latest
-nerdctl run -d -p 28080:80 --name nginx-2 nginx:latest
+
+mkdir -p /tmp/nginx-1 && echo "nginx-1" > /tmp/nginx-1/index.html
+mkdir -p /tmp/nginx-2 && echo "nginx-2" > /tmp/nginx-2/index.html
+
+nerdctl run -d -p 18080:80 --name nginx-1 -v /tmp/nginx-1:/usr/share/nginx/html nginx:latest
+nerdctl run -d -p 28080:80 --name nginx-2 -v /tmp/nginx-2:/usr/share/nginx/html nginx:latest
 
 
 echo "register an health nginx instance"
