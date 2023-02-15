@@ -64,3 +64,4 @@ echo "fetch endpoint from health API with health filter"
 curl -fsSL http://127.0.0.1:8500/v1/health/service/nginx?passing=true | jq -r '.[].Service.Address'
 # https://developer.hashicorp.com/consul/api-docs/health#passing
 )
+dig @127.0.0.1 -p 8600 -t srv nginx.service.dc1.consul. +short
