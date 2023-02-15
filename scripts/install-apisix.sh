@@ -71,6 +71,9 @@ deployment:
     prefix: "/apisix"
     timeout: 30
   admin:
+    allow_admin:
+      - 192.168.0.0/16
+      - 127.0.0.0/24  
     admin_key:
       - name: admin
         key: edd1c9f034335f136f87ad84b625c8f1  # using fixed API token has security risk, please update it when you deploy to production environment
