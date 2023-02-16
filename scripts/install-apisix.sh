@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 
-#!/usr/bin/env bash
+
 iface="${iface:-enp0s8}"
 apisix_home="${apisix_home:-/opt/apisix}"
 apisix_dashboard_home="${apisix_dashboard_home:-/opt/apisix-dashboard}"
