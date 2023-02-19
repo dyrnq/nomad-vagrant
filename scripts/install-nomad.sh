@@ -20,9 +20,9 @@ while [ $# -gt 0 ]; do
             encrypt="$2"
             shift
             ;;
-		--server)
-			SERVER=1
-			;;
+        --server)
+            SERVER=1
+            ;;
         --*)
             echo "Illegal option $1"
             ;;
@@ -38,11 +38,11 @@ command_exists() {
 }
 
 is_server() {
-	if [ -z "$SERVER" ]; then
-		return 1
-	else
-		return 0
-	fi
+    if [ -z "$SERVER" ]; then
+        return 1
+    else
+        return 0
+    fi
 }
 
 fun_install() {
