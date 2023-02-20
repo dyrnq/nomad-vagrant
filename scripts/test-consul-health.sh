@@ -57,7 +57,7 @@ curl http://127.0.0.1:8500/v1/agent/service/register -X PUT -d '
 
 (
 echo "fetch endpoint from catalog API"
-curl -fsSL http://127.0.0.1:8500/v1/catalog/service/nginx | jq -r '.[] | "\(.ServiceAddress)\(.ServicePort)"'
+curl -fsSL http://127.0.0.1:8500/v1/catalog/service/nginx | jq -r '.[] | "\(.ServiceAddress):\(.ServicePort)"'
 echo "fetch endpoint from health API without health filter"
 curl -fsSL http://127.0.0.1:8500/v1/health/service/nginx | jq -r '.[] | "\(.Service.Address):\(.Service.Port)"'
 echo "fetch endpoint from health API with health filter"
@@ -68,9 +68,9 @@ dig @127.0.0.1 -p 8600 -t srv nginx.service.dc1.consul. +short
 
 
 # fetch endpoint from catalog API
-# 192.168.33.418080
-# 192.168.33.428080
-# 192.168.33.438080
+# 192.168.33.4:18080
+# 192.168.33.4:28080
+# 192.168.33.4:38080
 # fetch endpoint from health API without health filter
 # 192.168.33.4:18080
 # 192.168.33.4:28080
