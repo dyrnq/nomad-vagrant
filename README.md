@@ -55,8 +55,8 @@ take notice of etcd not HA, just for test and demonstration.
 #### install flanneld
 
 ```bash
-bash /vagrant/script/install-flannel.sh
-bash /vagrant/script/install-cni-configs.sh
+bash /vagrant/scripts/install-flannel.sh
+bash /vagrant/scripts/install-cni-configs.sh
 ```
 
 #### init flanneld network config
@@ -101,8 +101,8 @@ nomad job status netshoot-2
 #### install calico-node
 
 ```bash
-bash /vagrant/script/install-calico.sh
-bash /vagrant/script/install-cni-configs.sh
+bash /vagrant/scripts/install-calico.sh
+bash /vagrant/scripts/install-cni-configs.sh
 ```
 
 #### reinit calico default-ipv4-ippool
