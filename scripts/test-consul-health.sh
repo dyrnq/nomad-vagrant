@@ -55,6 +55,18 @@ curl http://127.0.0.1:8500/v1/agent/service/register -X PUT -d '
 }
 '
 
+echo "register nginx instance without check"
+curl http://127.0.0.1:8500/v1/agent/service/register -X PUT -d '
+{
+    "name": "nginx",
+    "id": "nginx-4",
+    "address": "192.168.33.4",
+    "port": 48080,
+    "tags": ["dev"]
+}
+'
+
+
 (
 echo "fetch endpoint from catalog API"
 curl -fsSL http://127.0.0.1:8500/v1/catalog/service/nginx | jq -r '.[] | "\(.ServiceAddress):\(.ServicePort)"'
@@ -71,10 +83,13 @@ dig @127.0.0.1 -p 8600 -t srv nginx.service.dc1.consul. +short
 # 192.168.33.4:18080
 # 192.168.33.4:28080
 # 192.168.33.4:38080
+# 192.168.33.4:48080
 # fetch endpoint from health API without health filter
 # 192.168.33.4:18080
 # 192.168.33.4:28080
 # 192.168.33.4:38080
+# 192.168.33.4:48080
 # fetch endpoint from health API with health filter
 # 192.168.33.4:18080
 # 192.168.33.4:28080
+# 192.168.33.4:48080
