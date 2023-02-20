@@ -2,7 +2,7 @@
 
 
 iface="${iface:-enp0s8}"
-ver=${ver:-1.14.4}
+ver=${ver:-v1.6.18}
 
 while [ $# -gt 0 ]; do
     case "$1" in
@@ -21,7 +21,7 @@ while [ $# -gt 0 ]; do
     shift $(( $# > 0 ? 1 : 0 ))
 done
 
-ip4=$(/sbin/ip -o -4 addr list "${iface}" | awk '{print $4}' |cut -d/ -f1 | head -n1);
+#ip4=$(/sbin/ip -o -4 addr list "${iface}" | awk '{print $4}' |cut -d/ -f1 | head -n1);
 
 
 command_exists() {
@@ -31,9 +31,11 @@ command_exists() {
 
 
 fun_install(){
+local ver_nov
+ver_nov="${ver:1}"    
 mkdir -p /opt/cni/bin
 mkdir -p /etc/cni/net.d
-wget --continue https://files.m.daocloud.io/github.com/containerd/containerd/releases/download/v1.6.16/containerd-1.6.16-linux-amd64.tar.gz
+wget --continue https://files.m.daocloud.io/github.com/containerd/containerd/releases/download/"${ver}"/containerd-"${ver_nov}"-linux-amd64.tar.gz
 wget --continue https://files.m.daocloud.io/github.com/opencontainers/runc/releases/download/v1.1.4/runc.amd64
 wget --continue https://files.m.daocloud.io/github.com/containerd/nerdctl/releases/download/v1.2.0/nerdctl-1.2.0-linux-amd64.tar.gz
 wget --continue https://files.m.daocloud.io/github.com/moby/buildkit/releases/download/v0.11.2/buildkit-v0.11.2.linux-amd64.tar.gz
@@ -44,7 +46,7 @@ tar -xvz -f cni-plugins-linux-amd64-v1.2.0.tgz -C /opt/cni/bin
 
 install -m 755 flannel-amd64 /opt/cni/bin/flannel
 
-tar -xvf containerd-1.6.16-linux-amd64.tar.gz -C /usr/local
+tar -xvf containerd-"${ver_nov}"-linux-amd64.tar.gz -C /usr/local
 install -m 755 runc.amd64 /usr/bin/runc
 
 tar -xvf nerdctl-1.2.0-linux-amd64.tar.gz -C /usr/local/bin
