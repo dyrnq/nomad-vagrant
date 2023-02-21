@@ -257,11 +257,11 @@ curl http://127.0.0.1:9180/apisix/admin/routes/1 -H 'X-API-KEY: edd1c9f034335f13
 ```
 
 ```bash
-curl -fsSL http://127.0.0.1:8500/v1/catalog/service/netshoot-2-netshoot-group |jq -r ".[].ServiceAddress"
+curl -fsSL http://127.0.0.1:8500/v1/catalog/service/netshoot-2-netshoot-group | jq -r '.[] | "\(.ServiceAddress):\(.ServicePort)"'
 ```
 
 ```bash
-curl -fsL http://127.0.0.1:9090/v1/discovery/consul/dump | jq -r '.services."netshoot-2-netshoot-group"[].host'
+curl -fsL http://127.0.0.1:9090/v1/discovery/consul/dump | jq -r '.services."netshoot-2-netshoot-group"[] | "\(.host):\(.port)"'
 ```
 
 ### test watch
