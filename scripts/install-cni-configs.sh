@@ -82,6 +82,14 @@ cp -f -v /etc/cni/net.d/mynet.conf /opt/cni/config/mynet.conf
 
 }
 
-fun_install
+fun_post_install(){
+
+if systemctl is-active nomad &>/dev/null; then
+    systemctl reload nomad
+fi
+
+}
+
+fun_install && fun_post_install
 
 
