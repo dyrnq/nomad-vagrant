@@ -2,7 +2,12 @@
 
 
 iface="${iface:-enp0s8}"
-ver=${ver:-v1.6.18}
+ver=${ver:-v1.6.20}
+runc_ver=${runc_ver:-v1.1.4}
+nerdctl_ver=${nerdctl_ver:-v1.2.1}
+buildkit_ver=${buildkit_ver:-v0.11.5}
+cni_ver=${cni_ver:-v1.2.0}
+flannel_cni_ver=${flannel_cni_ver:-v1.1.2}
 
 while [ $# -gt 0 ]; do
     case "$1" in
@@ -32,16 +37,32 @@ command_exists() {
 
 fun_install(){
 local ver_nov
-ver_nov="${ver:1}"    
+local nerdctl_ver_nov
+
+ver_nov="${ver:1}"
+nerdctl_ver_nov="${nerdctl_ver:1}"
+
+#local runc_ver_nov
+#local buildkit_ver_nov
+#local cni_ver_nov
+#local flannel_cni_ver_nov
+#runc_ver_nov=${runc_ver:1}
+#buildkit_ver_nov=${buildkit_ver:1}
+#cni_ver_nov=${cni_ver:1}
+#flannel_cni_ver_nov=${flannel_cni_ver:1}
+
+
+
+
 mkdir -p /opt/cni/bin
 mkdir -p /etc/cni/net.d
 wget --continue https://files.m.daocloud.io/github.com/containerd/containerd/releases/download/"${ver}"/containerd-"${ver_nov}"-linux-amd64.tar.gz
-wget --continue https://files.m.daocloud.io/github.com/opencontainers/runc/releases/download/v1.1.4/runc.amd64
-wget --continue https://files.m.daocloud.io/github.com/containerd/nerdctl/releases/download/v1.2.0/nerdctl-1.2.0-linux-amd64.tar.gz
-wget --continue https://files.m.daocloud.io/github.com/moby/buildkit/releases/download/v0.11.2/buildkit-v0.11.2.linux-amd64.tar.gz
-wget --continue https://files.m.daocloud.io/github.com/containernetworking/plugins/releases/download/v1.2.0/cni-plugins-linux-amd64-v1.2.0.tgz
-wget --continue https://files.m.daocloud.io/github.com/flannel-io/cni-plugin/releases/download/v1.1.2/flannel-amd64
-tar -xvz -f cni-plugins-linux-amd64-v1.2.0.tgz -C /opt/cni/bin
+wget --continue https://files.m.daocloud.io/github.com/opencontainers/runc/releases/download/"${runc_ver}"/runc.amd64
+wget --continue https://files.m.daocloud.io/github.com/containerd/nerdctl/releases/download/"${nerdctl_ver}"/nerdctl-"${nerdctl_ver_nov}"-linux-amd64.tar.gz
+wget --continue https://files.m.daocloud.io/github.com/moby/buildkit/releases/download/"${buildkit_ver}"/buildkit-"${buildkit_ver}".linux-amd64.tar.gz
+wget --continue https://files.m.daocloud.io/github.com/containernetworking/plugins/releases/download/"${cni_ver}"/cni-plugins-linux-amd64-"${cni_ver}".tgz
+wget --continue https://files.m.daocloud.io/github.com/flannel-io/cni-plugin/releases/download/"${flannel_cni_ver}"/flannel-amd64
+tar -xvz -f cni-plugins-linux-amd64-"${cni_ver}".tgz -C /opt/cni/bin
 
 
 install -m 755 flannel-amd64 /opt/cni/bin/flannel
@@ -49,10 +70,10 @@ install -m 755 flannel-amd64 /opt/cni/bin/flannel
 tar -xvf containerd-"${ver_nov}"-linux-amd64.tar.gz -C /usr/local
 install -m 755 runc.amd64 /usr/bin/runc
 
-tar -xvf nerdctl-1.2.0-linux-amd64.tar.gz -C /usr/local/bin
+tar -xvf nerdctl-"${nerdctl_ver_nov}"-linux-amd64.tar.gz -C /usr/local/bin
 chmod 700 /usr/local/bin/nerdctl
 
-tar -xvf buildkit-v0.11.2.linux-amd64.tar.gz -C /usr/local
+tar -xvf buildkit-"${buildkit_ver}".linux-amd64.tar.gz -C /usr/local
 
 
 cat >/lib/systemd/system/containerd.service<<EOF
