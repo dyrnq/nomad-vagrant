@@ -3,8 +3,8 @@
 
 iface="${iface:-enp0s8}"
 ver=${ver:-v1.6.20}
-runc_ver=${runc_ver:-v1.1.4}
-nerdctl_ver=${nerdctl_ver:-v1.2.1}
+runc_ver=${runc_ver:-v1.1.5}
+nerdctl_ver=${nerdctl_ver:-v1.3.0}
 buildkit_ver=${buildkit_ver:-v0.11.5}
 cni_ver=${cni_ver:-v1.2.0}
 flannel_cni_ver=${flannel_cni_ver:-v1.1.2}
