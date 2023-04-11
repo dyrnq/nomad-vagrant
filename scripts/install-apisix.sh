@@ -5,7 +5,7 @@
 iface="${iface:-enp0s8}"
 apisix_home="${apisix_home:-/opt/apisix}"
 apisix_dashboard_home="${apisix_dashboard_home:-/opt/apisix-dashboard}"
-apisix_image="${apisix_image:-apache/apisix:3.1.0-debian}"
+apisix_image="${apisix_image:-apache/apisix:3.2.0-debian}"
 apisix_dashboard_image="${apisix_dashboard_image:-apache/apisix-dashboard:3.0.0-alpine}"
 
 
@@ -98,6 +98,9 @@ EOF
 nerdctl rm -f apisix 2>/dev/null || true
 nerdctl run -d --name apisix \
 --restart always \
+--log-driver=json-file \
+--log-opt=max-size=100m \
+--log-opt=max-file=10 \
 --net host \
 --privileged \
 --ulimit nofile=40000:40000 \
@@ -195,6 +198,9 @@ EOF
 nerdctl rm -f apisix-dashboard 2>/dev/null || true
 nerdctl run -d --name apisix-dashboard \
 --restart always \
+--log-driver=json-file \
+--log-opt=max-size=100m \
+--log-opt=max-file=10 \
 --net host \
 --privileged \
 -e TZ=Asia/Shanghai \
