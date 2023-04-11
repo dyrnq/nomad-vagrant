@@ -4,6 +4,7 @@
 iface="${iface:-enp0s8}"
 encrypt="${encrypt:-goplCZgdmOFMZ2Q43To0jw==}"
 SERVER=${SERVER:-}
+DEV=${DEV:-}
 ver=${ver:-1.14.4}
 
 while [ $# -gt 0 ]; do
@@ -22,6 +23,9 @@ while [ $# -gt 0 ]; do
             ;;
         --server)
             SERVER=1
+            ;;
+        --dev)
+            DEV=1
             ;;
         --*)
             echo "Illegal option $1"
@@ -45,6 +49,14 @@ is_server() {
     fi
 }
 
+is_dev() {
+    if [ -z "$DEV" ]; then
+        return 1
+    else
+        return 0
+    fi
+}
+
 fun_install() {
     mkdir -p /var/lib/consul
     mkdir -p /var/log/consul
@@ -56,9 +68,11 @@ fun_install() {
 
 
     echo "Installing Consul..."
-    curl -sSL https://releases.hashicorp.com/consul/${ver}/consul_${ver}_linux_amd64.zip -o /tmp/consul.zip
+    curl -fSL -# https://releases.hashicorp.com/consul/${ver}/consul_${ver}_linux_amd64.zip -o /tmp/consul.zip
     unzip -o -d /tmp /tmp/consul.zip
     install /tmp/consul /usr/bin/consul
+
+is_dev && devlfags="-dev"
 
 cat > /lib/systemd/system/consul.service <<EOF
 [Unit]
@@ -70,7 +84,7 @@ Wants=network-online.target
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/consul agent -config-dir /etc/consul.d/ -bind=$ip4 -node="$(hostname)"
+ExecStart=/usr/bin/consul agent -config-dir /etc/consul.d/ -bind=$ip4 -node="$(hostname)" $devlfags
 ExecReload=/bin/kill -HUP \$MAINPID
 KillMode=process
 KillSignal=SIGTERM
@@ -82,7 +96,29 @@ LimitNOFILE=65536
 WantedBy=multi-user.target
 EOF
 
-if is_server; then
+if is_dev; then
+cat >/etc/consul.d/consul.json<<EOF
+{
+    "client_addr": "0.0.0.0",
+    "datacenter": "dc1",
+    "data_dir": "/var/lib/consul",
+    "dns_config": {
+      "enable_truncate": true,
+      "only_passing": true
+    },
+    "encrypt": "$encrypt",
+    "leave_on_terminate": true,
+    "rejoin_after_leave": true,
+    "ui": true,
+    "enable_debug": false,
+    "auto_reload_config": true,
+    "disable_update_check": true,
+    "log_level": "INFO",
+    "log_file": "/var/log/consul/",
+    "log_rotate_duration": "24h"
+}
+EOF
+elif is_server; then
 cat >/etc/consul.d/consul.json<<EOF
 {
     "bootstrap_expect": 3,
