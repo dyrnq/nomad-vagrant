@@ -5,8 +5,8 @@
 iface="${iface:-enp0s8}"
 apisix_home="${apisix_home:-/opt/apisix}"
 apisix_dashboard_home="${apisix_dashboard_home:-/opt/apisix-dashboard}"
-apisix_image="${apisix_image:-apache/apisix:3.2.0-debian}"
-apisix_dashboard_image="${apisix_dashboard_image:-apache/apisix-dashboard:3.0.0-alpine}"
+apisix_image="${apisix_image:-apache/apisix:3.4.0-debian}"
+apisix_dashboard_image="${apisix_dashboard_image:-apache/apisix-dashboard:3.0.1-alpine}"
 
 
 
