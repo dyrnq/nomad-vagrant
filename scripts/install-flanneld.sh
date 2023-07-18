@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 
 
-iface="${iface:-enp0s8}"
-ver=${ver:-v0.21.1}
+iface="${iface:-eth1}"
+ver=${ver:-v0.22.0}
+# https://github.com/flannel-io/flannel/tags
 
 while [ $# -gt 0 ]; do
     case "$1" in

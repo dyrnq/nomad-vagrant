@@ -7,7 +7,7 @@
 # you're doing.
 
 Vagrant.configure("2") do |config|
-    config.vm.box = "ubuntu/focal64"
+    config.vm.box = "debian/bookworm64"
 
     config.vm.box_check_update = false
     config.ssh.insert_key = false
@@ -45,21 +45,28 @@ Vagrant.configure("2") do |config|
 
             if name == "vm4"
                 machine.vm.provision "shell", inline: <<-SHELL
-                    bash /vagrant/scripts/install-etcd.sh --ver "v3.5.6"
+                    bash /vagrant/scripts/install-etcd.sh --ver "v3.5.9"
+                    wait4x tcp -i 2s -t 300s 127.0.0.1:2379 && etcdctl put /coreos.com/network/config '{ "Network": "10.5.0.0/16", "Backend": {"Type": "vxlan"} }'
                 SHELL
             end
 
             if name == "vm4" or name == "vm5" or name == "vm6"
                 machine.vm.provision "shell", inline: <<-SHELL
-                    bash /vagrant/scripts/install-consul.sh --server --ver "1.14.4"
-                    bash /vagrant/scripts/install-nomad.sh --server --ver "1.4.3"
+                    bash /vagrant/scripts/install-consul.sh --server --ver "1.16.0"
+                    bash /vagrant/scripts/install-nomad.sh --server --ver "1.5.6"
                 SHELL
             else
                 machine.vm.provision "shell", inline: <<-SHELL
-                    bash /vagrant/scripts/install-consul.sh --ver "1.14.4"
-                    bash /vagrant/scripts/install-nomad.sh --ver "1.4.3"
+                    bash /vagrant/scripts/install-consul.sh --ver "1.16.0"
+                    bash /vagrant/scripts/install-nomad.sh --ver "1.5.6"
                 SHELL
             end
+
+            machine.vm.provision "shell", inline: <<-SHELL
+                wait4x tcp -i 2s -t 300s 192.168.33.4:2379 && bash /vagrant/scripts/install-flanneld.sh
+                bash /vagrant/scripts/install-cni-configs.sh
+            SHELL
+
 
         end
     end

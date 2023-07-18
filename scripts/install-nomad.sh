@@ -1,10 +1,13 @@
 #!/usr/bin/env bash
 
 
-iface="${iface:-enp0s8}"
+iface="${iface:-eth1}"
 encrypt="${encrypt:-goplCZgdmOFMZ2Q43To0jw==}"
 SERVER=${SERVER:-}
-ver=${ver:-1.4.3}
+ver=${ver:-1.5.6}
+containerd_driver_ver=${containerd_driver_ver:-v0.9.4}
+# https://github.com/hashicorp/nomad/tags
+# https://github.com/Roblox/nomad-driver-containerd/tags
 
 while [ $# -gt 0 ]; do
     case "$1" in
@@ -56,7 +59,7 @@ fun_install() {
 
 
     echo "Installing Nomad..."
-    curl -sSL https://releases.hashicorp.com/nomad/${ver}/nomad_${ver}_linux_amd64.zip -o /tmp/nomad.zip
+    curl -sSL -# https://releases.hashicorp.com/nomad/${ver}/nomad_${ver}_linux_amd64.zip -o /tmp/nomad.zip
     unzip -o -d /tmp /tmp/nomad.zip
     install /tmp/nomad /usr/bin/nomad
 
@@ -157,7 +160,7 @@ systemctl daemon-reload
 if systemctl is-active nomad &>/dev/null; then
     systemctl restart nomad
 else
-    systemctl enable --now nomad 
+    systemctl enable --now nomad
 fi
 systemctl status -l nomad --no-pager
 
@@ -172,7 +175,7 @@ if systemctl is-active nomad &>/dev/null; then
 fi
 
 mkdir -p /var/lib/nomad/plugins
-curl -# -o /var/lib/nomad/plugins/containerd-driver -fSL --retry 10 https://files.m.daocloud.io/github.com/Roblox/nomad-driver-containerd/releases/download/v0.9.3/containerd-driver
+curl -# -o /var/lib/nomad/plugins/containerd-driver -fSL --retry 10 https://files.m.daocloud.io/github.com/Roblox/nomad-driver-containerd/releases/download/${containerd_driver_ver}/containerd-driver
 chmod +x /var/lib/nomad/plugins/containerd-driver
 
 

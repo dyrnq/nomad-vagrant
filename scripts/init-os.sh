@@ -4,6 +4,7 @@
 fun_install() {
 
 sed -i.bak -e 's/archive.ubuntu.com/mirrors.ustc.edu.cn/g' -e 's@security.ubuntu.com@mirrors.ustc.edu.cn@g' /etc/apt/sources.list
+sed -i.bak -e 's/deb.debian.org/mirrors.ustc.edu.cn/g' -e 's|security.debian.org/debian-security|mirrors.ustc.edu.cn/debian-security|g' /etc/apt/sources.list
 while true; do
 DEBIAN_FRONTEND=noninteractive apt update && \
 DEBIAN_FRONTEND=noninteractive apt install -y \
@@ -161,5 +162,11 @@ systemctl daemon-reload && systemctl restart systemd-modules-load.service
 lsmod | grep br_netfilter
 
 }
+fun_tools(){
+    wget -t 10 https://files.m.daocloud.io/github.com/atkrad/wait4x/releases/download/v2.13.0/wait4x-linux-amd64.tar.gz -O /tmp/wait4x-linux-amd64.tar.gz
+    [ -f /tmp/wait4x-linux-amd64.tar.gz ] && tar -xvzf /tmp/wait4x-linux-amd64.tar.gz -C /usr/local/bin && chmod +x /usr/local/bin/wait4x;
+}
+
 
 fun_install
+fun_tools

@@ -2,7 +2,7 @@
 
 
 
-iface="${iface:-enp0s8}"
+iface="${iface:-eth1}"
 apisix_home="${apisix_home:-/opt/apisix}"
 apisix_dashboard_home="${apisix_dashboard_home:-/opt/apisix-dashboard}"
 apisix_image="${apisix_image:-apache/apisix:3.4.0-debian}"

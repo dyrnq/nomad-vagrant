@@ -1,13 +1,19 @@
 #!/usr/bin/env bash
 
 
-iface="${iface:-enp0s8}"
-ver=${ver:-v1.6.20}
-runc_ver=${runc_ver:-v1.1.5}
-nerdctl_ver=${nerdctl_ver:-v1.3.0}
-buildkit_ver=${buildkit_ver:-v0.11.5}
-cni_ver=${cni_ver:-v1.2.0}
+iface="${iface:-eth1}"
+ver=${ver:-v1.7.2}
+runc_ver=${runc_ver:-v1.1.7}
+nerdctl_ver=${nerdctl_ver:-v1.4.0}
+buildkit_ver=${buildkit_ver:-v0.12.0}
+cni_ver=${cni_ver:-v1.3.0}
 flannel_cni_ver=${flannel_cni_ver:-v1.1.2}
+# https://github.com/containerd/containerd/tags
+# https://github.com/opencontainers/runc/tags
+# https://github.com/containerd/nerdctl/tags
+# https://github.com/moby/buildkit/tags
+# https://github.com/containernetworking/plugins/tags
+# https://github.com/flannel-io/cni-plugin/tags
 
 while [ $# -gt 0 ]; do
     case "$1" in

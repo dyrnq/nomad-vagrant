@@ -76,16 +76,18 @@ EOF
 
 ## same as /etc/cni/net.d/10-testnet.conflist,for nomad found cni config.
 mkdir -p /opt/cni/config/
-cp -f -v /etc/cni/net.d/10-testnet.conflist /opt/cni/config/10-testnet.conflist
-cp -r -v /etc/cni/net.d/10-flannel.conflist /opt/cni/config/10-flannel.conflist
-cp -f -v /etc/cni/net.d/mynet.conf /opt/cni/config/mynet.conf
+/bin/cp -f -v /etc/cni/net.d/10-testnet.conflist /opt/cni/config/10-testnet.conflist
+/bin/cp -r -v /etc/cni/net.d/10-flannel.conflist /opt/cni/config/10-flannel.conflist
+/bin/cp -f -v /etc/cni/net.d/mynet.conf /opt/cni/config/mynet.conf
 
 }
 
 fun_post_install(){
 
 if systemctl is-active nomad &>/dev/null; then
-    systemctl reload nomad
+    echo "reload nomad..."
+    systemctl restart nomad
+    systemctl status -l nomad --no-pager
 fi
 
 }

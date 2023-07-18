@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-iface="${iface:-enp0s8}"
+iface="${iface:-eth1}"
 ver=${ver:-v3.25.0}
 
 while [ $# -gt 0 ]; do
@@ -76,7 +76,7 @@ EOF
 #   FELIX_VXLANMTU:                     <set to the key 'veth_mtu' of config map 'calico-config'>  Optional: false
 #   FELIX_WIREGUARDMTU:                 <set to the key 'veth_mtu' of config map 'calico-config'>  Optional: false
 #   CALICO_IPV4POOL_CIDR:               10.244.0.0/16
-#   IP_AUTODETECTION_METHOD:            interface=enp0s8
+#   IP_AUTODETECTION_METHOD:            interface=eth1
 #   CALICO_DISABLE_FILE_LOGGING:        true
 #   FELIX_DEFAULTENDPOINTTOHOSTACTION:  ACCEPT
 #   FELIX_IPV6SUPPORT:                  false

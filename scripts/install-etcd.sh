@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 
 
-iface="${iface:-enp0s8}"
-ver=${ver:-v3.5.6}
+iface="${iface:-eth1}"
+ver=${ver:-v3.5.9}
+# https://github.com/etcd-io/etcd/tags
 
 while [ $# -gt 0 ]; do
     case "$1" in
