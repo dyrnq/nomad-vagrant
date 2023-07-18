@@ -7,7 +7,7 @@ if curl -fSL http://127.0.0.1:9180/apisix/admin/routes/$id -X GET -H 'X-API-KEY:
 else
 curl http://127.0.0.1:9180/apisix/admin/routes/$id -H 'X-API-KEY: edd1c9f034335f136f87ad84b625c8f1' -X PUT -i -d '
 {
-  "uri": "/",
+  "uri": "/*",
   "name": "nginx",
   "upstream": {
     "timeout": {
@@ -38,5 +38,7 @@ while true; do
     curl -fsSL http://127.0.0.1:8500/v1/health/service/nginx?passing=true | jq -r '.[] | "\(.Service.Address):\(.Service.Port)"';
     echo "dump from apisix ******" ;
     curl -fsL http://127.0.0.1:9090/v1/discovery/consul/dump | jq -r '.services."nginx"[] | "\(.host):\(.port)"';
+    echo "######################################"
+    curl -fsL http://192.168.33.4:9080
     sleep 1s;
 done

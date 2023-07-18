@@ -7,8 +7,17 @@ if curl -fSL http://127.0.0.1:9180/apisix/admin/routes/$id -X GET -H 'X-API-KEY:
 else
 curl http://127.0.0.1:9180/apisix/admin/routes/$id -H 'X-API-KEY: edd1c9f034335f136f87ad84b625c8f1' -X PUT -i -d '
 {
-  "uri": "/",
+  "uris": [ "/nomad","/nomad/*" ],
   "name": "nomad-discovery",
+  "plugins": {
+    "proxy-rewrite": {
+      "use_real_request_uri_unsafe": false,
+      "regex_uri": [
+        "^/nomad(/|$)(.*)",
+        "/${2}"
+      ]
+    }
+  },
   "upstream": {
     "timeout": {
       "connect": 6,
@@ -38,5 +47,7 @@ while true; do
     curl -fsSL http://127.0.0.1:8500/v1/health/service/netshoot-2-netshoot-group?passing=true | jq -r '.[] | "\(.Service.Address):\(.Service.Port)"';
     echo "dump from apisix ******" ;
     curl -fsL http://127.0.0.1:9090/v1/discovery/consul/dump | jq -r '.services."netshoot-2-netshoot-group"[] | "\(.host):\(.port)"';
+    echo "######################################"
+    curl -fsL http://192.168.33.4:9080/nomad
     sleep 1s;
 done
