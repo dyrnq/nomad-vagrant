@@ -55,7 +55,7 @@ take notice of etcd not HA, just for test and demonstration.
 #### install flanneld
 
 ```bash
-bash /vagrant/scripts/install-flannel.sh
+bash /vagrant/scripts/install-flanneld.sh
 bash /vagrant/scripts/install-cni-configs.sh
 ```
 
