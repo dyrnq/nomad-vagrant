@@ -4,7 +4,7 @@
 iface="${iface:-eth1}"
 encrypt="${encrypt:-goplCZgdmOFMZ2Q43To0jw==}"
 SERVER=${SERVER:-}
-ver=${ver:-1.5.6}
+ver=${ver:-1.6.1}
 containerd_driver_ver=${containerd_driver_ver:-v0.9.4}
 # https://github.com/hashicorp/nomad/tags
 # https://github.com/Roblox/nomad-driver-containerd/tags

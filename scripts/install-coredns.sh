@@ -2,7 +2,7 @@
 
 
 iface="${iface:-eth1}"
-ver=${ver:-v1.10.1}
+ver=${ver:-v1.11.1}
 # https://github.com/coredns/coredns/tags
 
 while [ $# -gt 0 ]; do

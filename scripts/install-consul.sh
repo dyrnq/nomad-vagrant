@@ -5,7 +5,7 @@ iface="${iface:-eth1}"
 encrypt="${encrypt:-goplCZgdmOFMZ2Q43To0jw==}"
 SERVER=${SERVER:-}
 DEV=${DEV:-}
-ver=${ver:-1.16.0}
+ver=${ver:-1.16.1}
 # https://github.com/hashicorp/consul/tags
 
 while [ $# -gt 0 ]; do

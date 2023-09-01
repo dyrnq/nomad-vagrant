@@ -2,7 +2,7 @@
 
 
 iface="${iface:-eth1}"
-ver=${ver:-v0.22.0}
+ver=${ver:-v0.22.2}
 # https://github.com/flannel-io/flannel/tags
 
 while [ $# -gt 0 ]; do

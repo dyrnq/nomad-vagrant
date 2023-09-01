@@ -52,13 +52,13 @@ Vagrant.configure("2") do |config|
 
             if name == "vm4" or name == "vm5" or name == "vm6"
                 machine.vm.provision "shell", inline: <<-SHELL
-                    bash /vagrant/scripts/install-consul.sh --server --ver "1.16.0"
-                    bash /vagrant/scripts/install-nomad.sh --server --ver "1.5.6"
+                    bash /vagrant/scripts/install-consul.sh --server --ver "1.16.1"
+                    bash /vagrant/scripts/install-nomad.sh --server --ver "1.6.1"
                 SHELL
             else
                 machine.vm.provision "shell", inline: <<-SHELL
-                    bash /vagrant/scripts/install-consul.sh --ver "1.16.0"
-                    bash /vagrant/scripts/install-nomad.sh --ver "1.5.6"
+                    bash /vagrant/scripts/install-consul.sh --ver "1.16.1"
+                    bash /vagrant/scripts/install-nomad.sh --ver "1.6.1"
                 SHELL
             end
 
