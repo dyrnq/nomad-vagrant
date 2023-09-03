@@ -16,7 +16,7 @@ job "netshoot-1" {
                 # image = "nicolaka/netshoot"
                 # command = "sh"
                 # args = ["-c", "while true; do echo 'hello'; sleep 5; done"]
-                image ="containous/whoami"
+                image ="traefik/whoami"
                 args = ["--port", "8080"]
             }
             // resources {
