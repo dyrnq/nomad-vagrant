@@ -29,6 +29,7 @@ tks [nekione`s nekione/calico-nomad](https://github.com/nekione/calico-nomad).
     - [put route with apisix admin api](#put-route-with-apisix-admin-api)
     - [test watch](#test-watch)
   - [conclusion](#conclusion)
+  - [clickhouse](#clickhouse)
   - [ref](#ref)
 
 <!-- /TOC -->
@@ -299,7 +300,7 @@ ENGINE = Kafka
 SETTINGS 
   kafka_broker_list = '192.168.33.14:9092',
   kafka_topic_list = 'log_demo',
-  kafka_group_name = 'ck2-log',
+  kafka_group_name = 'ck-log',
   kafka_format = 'JSONAsString';
 
 
