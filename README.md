@@ -39,12 +39,14 @@ tks [nekione`s nekione/calico-nomad](https://github.com/nekione/calico-nomad).
 vagrant up vm4 vm5 vm6 vm7
 ```
 
-| vm  | ip           | install                                                    |
-|-----|--------------|------------------------------------------------------------|
-| vm4 | 192.168.33.4 | containerd,consul(server+client),nomad(server+client),etcd |
-| vm5 | 192.168.33.5 | containerd,consul(server+client),nomad(server+client)      |
-| vm6 | 192.168.33.6 | containerd,consul(server+client),nomad(server+client)      |
-| vm7 | 192.168.33.7 | containerd,consul(client),nomad(client)                    |
+| vm   | ip            | install                                                    |
+|------|---------------|------------------------------------------------------------|
+| vm4  | 192.168.33.4  | containerd,consul(server+client),nomad(server+client),etcd |
+| vm5  | 192.168.33.5  | containerd,consul(server+client),nomad(server+client)      |
+| vm6  | 192.168.33.6  | containerd,consul(server+client),nomad(server+client)      |
+| vm7  | 192.168.33.7  | containerd,consul(client),nomad(client)                    |
+| vm14 | 192.168.33.14 | containerd,zookeeper,kafka                                 |
+| vm15 | 192.168.33.15 | containerd,clickhouse                                      |
 
 take notice of etcd not HA, just for test and demonstration.
 
@@ -283,6 +285,53 @@ nomad job scale -detach netshoot-2 1
 ## conclusion
 
 Flanneld and calico are all work fine with nomad, nomad can use cni and nomad-driver-containerd create containers successfully, but calico subnet can not connect with each other.
+
+## clickhouse
+
+```bash
+CREATE DATABASE IF NOT EXISTS LOG
+
+CREATE TABLE LOG.log_queue
+(
+    `log` String
+)
+ENGINE = Kafka
+SETTINGS 
+  kafka_broker_list = '192.168.33.14:9092',
+  kafka_topic_list = 'log_demo',
+  kafka_group_name = 'ck2-log',
+  kafka_format = 'JSONAsString';
+
+
+
+CREATE TABLE LOG.rawlog
+(
+    `message` String CODEC(ZSTD(1)),
+    `hostname` String,
+    `logfile_path` String,
+    `log_time` DateTime DEFAULT now(),
+     INDEX message message TYPE tokenbf_v1(30720, 2, 0) GRANULARITY 1
+)
+ENGINE = MergeTree
+PARTITION BY (toDate(log_time))
+ORDER BY (log_time)
+TTL log_time + toIntervalDay(30)
+SETTINGS index_granularity = 8192;
+
+CREATE MATERIALIZED VIEW LOG.mv_rawlog TO LOG.rawlog
+(
+    `message` String,
+    `hostname` String,
+    `logfile_path` String,
+    `log_time` DateTime
+) AS
+SELECT
+    JSONExtractString(log, 'message') AS message,
+    JSONExtractString(JSONExtractString(log, 'host'), 'name') AS hostname,
+    JSONExtractString(JSONExtractString(JSONExtractString(log, 'log'), 'file'), 'path') AS logfile_path,
+    now() AS log_time
+FROM LOG.log_queue;
+```
 
 ## ref
 

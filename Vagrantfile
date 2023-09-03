@@ -72,6 +72,43 @@ Vagrant.configure("2") do |config|
     end
 
 
+    hetero_machines = {
+        'vm14'   => '192.168.33.14',
+        'vm15'   => '192.168.33.15',
+    }
+
+    hetero_machines.each do |name, ip|
+        config.vm.define name do |machine|
+            machine.vm.network "private_network", ip: ip
+
+            machine.vm.hostname = name
+            machine.vm.provider :virtualbox do |vb|
+                #vb.name = name  
+                vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+                vb.customize ["modifyvm", :id, "--vram", "32"]
+                vb.customize ["modifyvm", :id, "--ioapic", "on"]
+                vb.customize ["modifyvm", :id, "--cpus", "2"]
+                vb.customize ["modifyvm", :id, "--memory", "4096"]
+            end
+
+            machine.vm.provision "shell", inline: <<-SHELL
+                echo "root:vagrant" | sudo chpasswd
+                timedatectl set-timezone "Asia/Shanghai"
+                bash /vagrant/scripts/init-os.sh
+                bash /vagrant/scripts/install-containerd.sh
+            SHELL
+
+
+
+            if name == "vm14"
+                machine.vm.provision "shell", inline: <<-SHELL
+                    bash /vagrant/scripts/install-kafka.sh
+                SHELL
+            end
+
+
+        end
+    end
 
 
 end
