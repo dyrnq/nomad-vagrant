@@ -2,7 +2,7 @@
 
 ## introduce
 
-This is a project that attempts to create a working nomad cluster with nomad + consul + containerd + cni + flanneld + calico + etcd + nomad-driver-containerd, using Vagrant.
+This is a project that attempts to create a working nomad cluster with nomad + consul + containerd + cni + flanneld(or calico) + etcd + nomad-driver-containerd, using Vagrant.
 
 tks [nekione`s nekione/calico-nomad](https://github.com/nekione/calico-nomad).
 
