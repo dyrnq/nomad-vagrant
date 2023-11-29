@@ -7,7 +7,7 @@ mkdir -p $HOME/var/lib/zookeeper/datalog/;
 nerdctl rm -f zookeeper 2>/dev/null || true;
 nerdctl run -d --name zookeeper --restart always --network flash \
 --log-driver=json-file \
---log-opt=max-size=100m \
+--log-opt=max-size=10m \
 --log-opt=max-file=10 \
 -e ALLOW_ANONYMOUS_LOGIN=yes \
 -v $HOME/var/lib/zookeeper/data:/data \
@@ -25,7 +25,7 @@ nerdctl rm -f kafka 2>/dev/null || true;
 
 nerdctl run -d --name kafka --restart always --network flash \
 --log-driver=json-file \
---log-opt=max-size=100m \
+--log-opt=max-size=10m \
 --log-opt=max-file=10 \
 -e KAFKA_CFG_ZOOKEEPER_CONNECT=192.168.33.14:2181 \
 -e KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE=true \
@@ -44,7 +44,7 @@ bitnami/kafka:3.4.1-debian-11-r81
 nerdctl rm -f kafka-ui 2>/dev/null || true;
 nerdctl run -d --name kafka-ui --restart always --network flash \
 --log-driver=json-file \
---log-opt=max-size=100m \
+--log-opt=max-size=10m \
 --log-opt=max-file=10 \
 -e LOGGING_LEVEL_COM_PROVECTUS=INFO \
 -e KAFKA_CLUSTERS_0_NAME=local \

@@ -99,7 +99,7 @@ nerdctl rm -f apisix 2>/dev/null || true
 nerdctl run -d --name apisix \
 --restart always \
 --log-driver=json-file \
---log-opt=max-size=100m \
+--log-opt=max-size=10m \
 --log-opt=max-file=10 \
 --net host \
 --privileged \
@@ -199,7 +199,7 @@ nerdctl rm -f apisix-dashboard 2>/dev/null || true
 nerdctl run -d --name apisix-dashboard \
 --restart always \
 --log-driver=json-file \
---log-opt=max-size=100m \
+--log-opt=max-size=10m \
 --log-opt=max-file=10 \
 --net host \
 --privileged \
