@@ -129,6 +129,16 @@ WantedBy=multi-user.target
 
 EOF
 
+# make containerd use mirror
+mkdir -p /etc/containerd/certs.d/docker.io/
+cat > /etc/containerd/certs.d/docker.io/hosts.toml<<EOF
+[host."https://docker.m.daocloud.io"]
+  capabilities = ["pull","resolve"]
+[host."https://docker.mirrors.ustc.edu.cn"]
+  capabilities = ["pull","resolve"]
+[host."https://registry-1.docker.io"]
+  capabilities = ["pull","resolve","push"]
+EOF
 
 systemctl daemon-reload
 if systemctl is-active containerd &>/dev/null; then
