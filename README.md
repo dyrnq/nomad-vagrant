@@ -94,6 +94,7 @@ nerdctl run --net cbr0 -it --rm dyrnq/nettools bash -c "ip a show dev eth0 && sl
 first use `nomad run` deploy job, just like `kubectl apply -f foo.yaml`.
 
 ```bash
+nomad stop -purge netshoot-2 || true
 nomad run -detach /vagrant/nomad-jobs/example-job-cni-flannel.hcl
 
 nomad job status netshoot-2
