@@ -2,12 +2,12 @@
 
 
 iface="${iface:-eth1}"
-ver=${ver:-v1.7.5}
-runc_ver=${runc_ver:-v1.1.9}
-nerdctl_ver=${nerdctl_ver:-v1.5.0}
-buildkit_ver=${buildkit_ver:-v0.12.2}
-cni_ver=${cni_ver:-v1.3.0}
-flannel_cni_ver=${flannel_cni_ver:-v1.2.0}
+ver=${ver:-v1.7.18}
+runc_ver=${runc_ver:-v1.1.13}
+nerdctl_ver=${nerdctl_ver:-v1.7.6}
+buildkit_ver=${buildkit_ver:-v0.14.1}
+cni_ver=${cni_ver:-v1.5.1}
+flannel_cni_ver=${flannel_cni_ver:-v1.4.1-flannel1}
 # https://github.com/containerd/containerd/tags
 # https://github.com/opencontainers/runc/tags
 # https://github.com/containerd/nerdctl/tags
