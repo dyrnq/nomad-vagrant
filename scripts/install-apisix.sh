@@ -5,7 +5,7 @@
 iface="${iface:-eth1}"
 apisix_home="${apisix_home:-/opt/apisix}"
 apisix_dashboard_home="${apisix_dashboard_home:-/opt/apisix-dashboard}"
-apisix_image="${apisix_image:-apache/apisix:3.4.0-debian}"
+apisix_image="${apisix_image:-apache/apisix:3.9.1-debian}"
 apisix_dashboard_image="${apisix_dashboard_image:-apache/apisix-dashboard:3.0.1-alpine}"
 
 
@@ -57,9 +57,17 @@ mkdir -p ${apisix_dashboard_home}/conf
 ## https://github.com/apache/apisix/blob/master/conf/config.yaml
 cat > ${apisix_home}/conf/config.yaml <<EOF
 apisix:
-  node_listen: 9080
+  node_listen:
+    - 9080
+  proxy_mode: "http&stream"
+  ssl:
+    enable: true
+    listen:
+      - port: 9443
   enable_ipv6: false
-
+  stream_proxy:
+      tcp:
+        - 9100
 
 deployment:
   role: traditional
