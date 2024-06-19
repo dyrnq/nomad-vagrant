@@ -5,7 +5,10 @@
 # configures the configuration version (we support older styles for
 # backwards compatibility). Please don't change it unless you know what
 # you're doing.
-
+ETCD_VER="v3.5.11"
+CONSUL_VER="1.19.0"
+NOMAD_VER="1.8.0"
+FLANNELD_VER="v0.25.4"
 Vagrant.configure("2") do |config|
     config.vm.box = "debian/bookworm64"
 
@@ -45,25 +48,25 @@ Vagrant.configure("2") do |config|
 
             if name == "vm4"
                 machine.vm.provision "shell", inline: <<-SHELL
-                    bash /vagrant/scripts/install-etcd.sh --ver "v3.5.9"
+                    bash /vagrant/scripts/install-etcd.sh --ver "#{ETCD_VER}"
                     wait4x tcp -i 2s -t 300s 127.0.0.1:2379 && etcdctl put /coreos.com/network/config '{ "Network": "10.5.0.0/16", "Backend": {"Type": "vxlan"} }'
                 SHELL
             end
 
-            if name == "vm4" or name == "vm5" or name == "vm6"
+            if /^vm[456]$/.match?(name)
                 machine.vm.provision "shell", inline: <<-SHELL
-                    bash /vagrant/scripts/install-consul.sh --server --ver "1.16.1"
-                    bash /vagrant/scripts/install-nomad.sh --server --ver "1.6.1"
+                    bash /vagrant/scripts/install-consul.sh --server --ver "#{CONSUL_VER}"
+                    bash /vagrant/scripts/install-nomad.sh --server --ver "#{NOMAD_VER}"
                 SHELL
             else
                 machine.vm.provision "shell", inline: <<-SHELL
-                    bash /vagrant/scripts/install-consul.sh --ver "1.16.1"
-                    bash /vagrant/scripts/install-nomad.sh --ver "1.6.1"
+                    bash /vagrant/scripts/install-consul.sh --ver "#{CONSUL_VER}"
+                    bash /vagrant/scripts/install-nomad.sh --ver "#{NOMAD_VER}"
                 SHELL
             end
 
             machine.vm.provision "shell", inline: <<-SHELL
-                wait4x tcp -i 2s -t 300s 192.168.33.4:2379 && bash /vagrant/scripts/install-flanneld.sh
+                wait4x tcp -i 2s -t 300s 192.168.33.4:2379 && bash /vagrant/scripts/install-flanneld.sh --ver "#{FLANNELD_VER}"
                 bash /vagrant/scripts/install-cni-configs.sh
             SHELL
 
