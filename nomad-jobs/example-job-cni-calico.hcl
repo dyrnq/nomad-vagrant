@@ -40,7 +40,7 @@ job "netshoot-1" {
         }
 
         network {
-            mode = "cni/testnet"
+            mode = "cni/calico"
             port "http" {
                 to = 8080
             }

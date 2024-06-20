@@ -58,7 +58,7 @@ take notice of etcd not HA, just for test and demonstration.
 #### install flanneld
 
 ```bash
-bash /vagrant/scripts/install-flanneld.sh
+bash /vagrant/scripts/install-flanneld.sh --ver "v0.25.4"
 bash /vagrant/scripts/install-cni-configs.sh
 ```
 
@@ -105,7 +105,7 @@ nomad job status netshoot-2
 #### install calico-node
 
 ```bash
-bash /vagrant/scripts/install-calico.sh
+bash /vagrant/scripts/install-calico.sh --ver "v3.28.0"
 bash /vagrant/scripts/install-cni-configs.sh
 ```
 
@@ -129,7 +129,7 @@ spec:
   nodeSelector: all()
   vxlanMode: Always
 EOF
-calicoctl get ippools default-ipv4-ippool -o json
+calicoctl get ippools default-ipv4-ippool
 
 calicoctl ipam check
 
@@ -143,7 +143,7 @@ calicoctl node status
 #### test calico network
 
 ```bash
-nerdctl run --net testnet -it --rm dyrnq/nettools bash -c "ip a show dev eth0 && sleep 2s && ping -c 5 192.168.33.1"
+nerdctl run --net calico -it --rm dyrnq/nettools bash -c "ip a show dev eth0 && sleep 2s && ping -c 5 192.168.33.1"
 ```
 
 #### run nomad job with cni calico
@@ -151,6 +151,7 @@ nerdctl run --net testnet -it --rm dyrnq/nettools bash -c "ip a show dev eth0 &&
 first use `nomad run` deploy job, just like `kubectl apply -f foo.yaml`.
 
 ```bash
+nomad stop -purge netshoot-1 || true
 nomad run -detach /vagrant/nomad-jobs/example-job-cni-calico.hcl
 
 nomad job status netshoot-1
