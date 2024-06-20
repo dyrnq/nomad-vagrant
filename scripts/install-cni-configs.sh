@@ -30,6 +30,7 @@ cat >/etc/cni/net.d/10-calico.conflist<<EOF
       {
         "type": "calico",
         "log_level": "info",
+        "log_file_path": "/var/log/calico/cni/cni.log",
         "datastore_type": "etcdv3",
         "etcd_endpoints": "http://192.168.33.4:2379",
         "nodename": "$(hostname)",
