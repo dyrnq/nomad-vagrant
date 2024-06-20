@@ -59,7 +59,7 @@ fun_install() {
 
 
     echo "Installing Nomad..."
-    curl -sSL -# https://releases.hashicorp.com/nomad/${ver}/nomad_${ver}_linux_amd64.zip -o /tmp/nomad.zip
+    curl -fSL -# https://releases.hashicorp.com/nomad/${ver}/nomad_${ver}_linux_amd64.zip -o /tmp/nomad.zip
     unzip -o -d /tmp /tmp/nomad.zip
     install /tmp/nomad /usr/bin/nomad
 
