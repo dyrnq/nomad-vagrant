@@ -9,6 +9,7 @@ ETCD_VER="v3.5.11"
 CONSUL_VER="1.19.0"
 NOMAD_VER="1.8.0"
 FLANNELD_VER="v0.25.4"
+CALICO_VER="v3.28.0"
 Vagrant.configure("2") do |config|
     config.vm.box = "debian/bookworm64"
 
@@ -66,7 +67,8 @@ Vagrant.configure("2") do |config|
             end
 
             machine.vm.provision "shell", inline: <<-SHELL
-                wait4x tcp -i 2s -t 300s 192.168.33.4:2379 && bash /vagrant/scripts/install-flanneld.sh --ver "#{FLANNELD_VER}"
+                #wait4x tcp -i 2s -t 300s 192.168.33.4:2379 && bash /vagrant/scripts/install-flanneld.sh --ver "#{FLANNELD_VER}"
+                wait4x tcp -i 2s -t 300s 192.168.33.4:2379 && bash /vagrant/scripts/install-calico.sh --ver "#{CALICO_VER}"
                 bash /vagrant/scripts/install-cni-configs.sh
             SHELL
 

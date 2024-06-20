@@ -287,7 +287,7 @@ nomad job scale -detach netshoot-2 1
 
 ## conclusion
 
-Flanneld and calico are all work fine with nomad, nomad can use cni and nomad-driver-containerd create containers successfully, but calico subnet can not connect with each other.
+Flanneld and calico are all work fine with nomad, nomad can use cni and nomad-driver-containerd create containers successfully.
 
 ## clickhouse
 
