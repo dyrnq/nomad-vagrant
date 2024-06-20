@@ -160,13 +160,16 @@ mkdir -p /etc/cni/net.d
 
 echo "install calico cni plugins"
 nerdctl run \
--it \
+--detach \
 --privileged \
---rm \
+--name calico-cni \
 -v /opt/cni/bin:/host/opt/cni/bin \
 -v /etc/cni/net.d:/host/etc/cni/net.d \
 docker.io/calico/cni:"${ver}" || true
 
+until test -e /opt/cni/bin/calico; do
+  sleep 1s && nerdctl rm -f calico-cni && ls -l /opt/cni/bin/
+done
 
 
 cat >/etc/calico/calicoctl.cfg<<EOF
