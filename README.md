@@ -86,7 +86,7 @@ etcdctl get --from-key /coreos.com -w simple
 #### test flannel network
 
 ```bash
-nerdctl run --net cbr0 -it --rm dyrnq/nettools bash -c "ip a show dev eth0 && sleep 2s && ping -c 5 192.168.33.1"
+nerdctl run --net flannel -it --rm dyrnq/nettools bash -c "ip a show dev eth0 && sleep 2s && ping -c 5 192.168.33.1"
 ```
 
 #### run nomad job with cni flannel

@@ -40,7 +40,7 @@ job "netshoot-2" {
         }
 
         network {
-            mode = "cni/cbr0"
+            mode = "cni/flannel"
             port "http" {
                 to = 8080
             }

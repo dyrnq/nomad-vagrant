@@ -54,7 +54,7 @@ EOF
 
 cat >/etc/cni/net.d/10-flannel.conflist<<EOF
 {
-  "name": "cbr0",
+  "name": "flannel",
   "cniVersion": "0.3.1",
   "plugins": [
     {
