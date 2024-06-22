@@ -158,6 +158,7 @@ mkdir -p /etc/calico
 mkdir -p /etc/cni/net.d
 
 echo "install calico cni plugins"
+nerdctl rm -f calico-cni >/dev/null 2>&1 || true
 nerdctl run \
 --detach \
 --privileged \
