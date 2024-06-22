@@ -198,3 +198,17 @@ systemctl status -l calico-node --no-pager
 
 
 fun_install
+
+
+calicoctl apply -f - <<EOF
+apiVersion: projectcalico.org/v3
+kind: GlobalNetworkPolicy
+metadata:
+  name: allow-all
+spec:
+  selector: all()
+  ingress:
+  - action: Allow
+  egress:
+  - action: Allow
+EOF
