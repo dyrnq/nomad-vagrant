@@ -135,7 +135,7 @@ EnvironmentFile=-/etc/calico/calico.env
 # ExecStartPre=-/sbin/modprobe ip6table_mangle
 # ExecStartPre=-/sbin/modprobe ip6table_filter
 # ExecStartPre=-/sbin/modprobe ip6_tables
-ExecStartPre=-/usr/local/bin/nerdctl rm -f calico-node
+ExecStartPre=-/usr/local/bin/nerdctl rm -f calico-node 2>/dev/null
 ExecStart=/usr/bin/bash /usr/local/bin/calicoup.sh
 
 ExecStop=-/usr/local/bin/nerdctl stop calico-node
@@ -163,11 +163,12 @@ nerdctl run \
 --detach \
 --privileged \
 --name calico-cni \
+--env SLEEP=false \
 -v /opt/cni/bin:/host/opt/cni/bin \
 -v /etc/cni/net.d:/host/etc/cni/net.d \
 docker.io/calico/cni:"${ver}" || true
 
-until test -e /opt/cni/bin/calico; do
+until test -e /opt/cni/bin/calico && test -e /opt/cni/bin/calico-ipam ; do
   sleep 1s && nerdctl rm -f calico-cni && ls -l /opt/cni/bin/
 done
 
