@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-net=${net:-flannel}
+net=${net:-calico}
 while [ $# -gt 0 ]; do
     case "$1" in
         --net|--cni)
@@ -37,8 +37,8 @@ ping -c 3 192.168.33.5
 ping -c 3 192.168.33.6
 EOF
 
-nc -nvz ${cip} 80
-nc -nvz 192.168.33.4 9992
-nc -nvz 192.168.33.5 9992
-nc -nvz 192.168.33.6 9992
+nc -nvz -w 2s ${cip} 80
+nc -nvz -w 2s 192.168.33.4 9992
+nc -nvz -w 2s 192.168.33.5 9992
+nc -nvz -w 2s 192.168.33.6 9992
 

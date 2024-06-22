@@ -58,9 +58,9 @@ EOF
 
 
 while true; do
-    echo "--->$(date)===";
-    curl --connect-timeout 1 --max-time 1 -s -o /dev/null -w "%{http_code}" http://127.0.0.1:9080;
-    echo "fetch X-Consul-Index change---->"
+    echo -n "--->$(date)===";
+    curl --connect-timeout 1 --max-time 1 -s -o /dev/null -w "%{http_code}\n" http://127.0.0.1:9080;
+    echo -n "fetch X-Consul-Index change---->"
     curl -fsSL -i http://127.0.0.1:8500/v1/health/state/any |grep X-Consul-Index
     echo "fetch health from consul";
     curl -fsSL http://127.0.0.1:8500/v1/health/service/httpbin?passing=true | jq -r '.[] | "\(.Service.Address):\(.Service.Port)"';

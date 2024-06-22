@@ -70,6 +70,8 @@ Vagrant.configure("2") do |config|
                 #wait4x tcp -i 2s -t 300s 192.168.33.4:2379 && bash /vagrant/scripts/install-flanneld.sh --ver "#{FLANNELD_VER}"
                 wait4x tcp -i 2s -t 300s 192.168.33.4:2379 && bash /vagrant/scripts/install-calico.sh --ver "#{CALICO_VER}"
                 bash /vagrant/scripts/install-cni-configs.sh
+                nerdctl network list
+                nerdctl run --net calico -d --name test -v /opt:/opt -p 9992:80 --ulimit nofile=40000:40000 kennethreitz/httpbin
             SHELL
 
 
