@@ -33,11 +33,10 @@ mkdir -p /var/log/calico
 mkdir -p /var/run/calico
 mkdir -p /var/lib/calico
 
-/usr/local/bin/nerdctl run \
+exec /usr/local/bin/nerdctl run \
 --net=host \
 --privileged \
 --name=calico-node \
---detach \
 --restart=always \
 -e DATASTORE_TYPE="etcdv3" \
 -e ETCD_DISCOVERY_SRV= \
