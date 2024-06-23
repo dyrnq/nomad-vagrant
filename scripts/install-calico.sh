@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 iface="${iface:-eth1}"
 ver=${ver:-v3.25.0}
-
+bpf=${bpf:-}
 while [ $# -gt 0 ]; do
     case "$1" in
         --iface|-i)
@@ -11,6 +11,9 @@ while [ $# -gt 0 ]; do
         --version|--ver)
             ver="$2"
             shift
+            ;;
+        --bpf)
+            bpf=1
             ;;
         --*)
             echo "Illegal option $1"
@@ -54,6 +57,7 @@ exec /usr/local/bin/nerdctl run \
 -e CALICO_IPV6POOL_NAT_OUTGOING=false \
 -e FELIX_HEALTHENABLED=true \
 -e FELIX_IPV6SUPPORT=false \
+-e FELIX_BPFENABLED=false \
 -v /var/log/calico:/var/log/calico \
 -v /var/run/calico:/var/run/calico \
 -v /var/lib/calico:/var/lib/calico \
@@ -62,6 +66,14 @@ exec /usr/local/bin/nerdctl run \
 -v /run:/run \
 docker.io/calico/node:${ver}
 EOF
+
+if [ "${bpf}" = "1" ]; then
+sed -i \
+-e "s@FELIX_VXLANENABLED=true@FELIX_VXLANENABLED=false@g" \
+-e "s@CALICO_IPV4POOL_VXLAN=Always@CALICO_IPV4POOL_VXLAN=Never@g" \
+-e "s@FELIX_BPFENABLED=false@FELIX_BPFENABLED=true@g" \
+/usr/local/bin/calicoup.sh
+fi
 
 #   DATASTORE_TYPE:                     kubernetes
 #   WAIT_FOR_DATASTORE:                 true
