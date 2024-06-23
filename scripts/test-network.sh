@@ -16,8 +16,8 @@ done
 
 
 
-nerdctl rm -f test &>/dev/null || true
-nerdctl run --net ${net} -d --name test -v /opt:/opt -p 9992:80 --ulimit nofile=40000:40000 kennethreitz/httpbin
+# nerdctl rm -f test &>/dev/null || true
+# nerdctl run --net ${net} -d --name test -v /opt:/opt -p 9992:80 --ulimit nofile=40000:40000 kennethreitz/httpbin
 
 nerdctl exec -i test bash <<'EOF'
 sed -i 's@//.*archive.ubuntu.com@//mirrors.ustc.edu.cn@g' /etc/apt/sources.list
