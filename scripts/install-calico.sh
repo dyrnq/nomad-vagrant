@@ -197,8 +197,43 @@ systemctl status -l calico-node --no-pager
 }
 
 
-fun_install
+fun_install_cni_conflist(){
+mkdir -p /etc/cni/net.d
+cat >/etc/cni/net.d/10-calico.conflist<<EOF
+{
+    "name": "calico",
+    "cniVersion": "0.3.1",
+    "plugins": [
+      {
+        "type": "calico",
+        "log_level": "info",
+        "log_file_path": "/var/log/calico/cni/cni.log",
+        "datastore_type": "etcdv3",
+        "etcd_endpoints": "http://192.168.33.4:2379",
+        "nodename": "$(hostname)",
+        "mtu": 0,
+        "ipam": {
+            "type": "calico-ipam"
+        }
+      },
+      {
+        "type": "portmap",
+        "snat": true,
+        "capabilities": {"portMappings": true}
+      },
+      {
+        "type": "bandwidth",
+        "capabilities": {"bandwidth": true}
+      }
+    ]
+}
+EOF
 
+}
+
+
+fun_install
+fun_install_cni_conflist
 
 calicoctl apply -f - <<EOF
 apiVersion: projectcalico.org/v3

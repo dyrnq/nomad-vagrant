@@ -72,4 +72,30 @@ fi
 systemctl status -l flanneld --no-pager
 }
 
+fun_install_cni_conflist(){
+mkdir -p /etc/cni/net.d
+cat >/etc/cni/net.d/10-flannel.conflist<<EOF
+{
+  "name": "flannel",
+  "cniVersion": "0.3.1",
+  "plugins": [
+    {
+      "type": "flannel",
+      "delegate": {
+        "hairpinMode": true,
+        "isDefaultGateway": true
+      }
+    },
+    {
+      "type": "portmap",
+      "capabilities": {
+        "portMappings": true
+      }
+    }
+  ]
+}
+EOF
+}
+
 fun_install
+fun_install_cni_conflist
