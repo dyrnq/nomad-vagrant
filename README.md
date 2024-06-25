@@ -106,12 +106,18 @@ nomad job status netshoot-2
 
 ```bash
 bash /vagrant/scripts/install-calico.sh --ver "v3.28.0"
+
+## or with calico bpf
+
+bash /vagrant/scripts/install-calico.sh --ver "v3.28.0" --bpf
+
 bash /vagrant/scripts/install-cni-configs.sh
 ```
 
 #### reinit calico default-ipv4-ippool
 
 ```bash
+## This is unnecessary
 calicoctl delete ippools default-ipv4-ippool
 calicoctl create -f -<<EOF
 apiVersion: projectcalico.org/v3
@@ -129,6 +135,10 @@ spec:
   nodeSelector: all()
   vxlanMode: Always
 EOF
+## This is unnecessary
+```
+
+```bash
 calicoctl get ippools default-ipv4-ippool
 
 calicoctl ipam check
@@ -161,6 +171,15 @@ then, waiting job running use `nerdctl ps` found running containers.
 
 ```bash
 nerdctl -n nomad ps -a
+
+## Unless we are operating in cgroups.v2 mode, in which case we use the
+## name "nomad.slice", which ends up being the cgroup parent.
+## <https://github.com/Roblox/nomad-driver-containerd/blob/v0.9.4/containerd/driver.go#L267>
+
+## or 
+
+nerdctl -n nomad.slice ps -a
+
 ```
 
 remove job
